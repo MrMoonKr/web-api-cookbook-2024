@@ -3,6 +3,13 @@
  * From "Web Browser API Cookbook" by Joe Attardi
  */
 
+// https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex
+
+/**
+ * @type {IDBDatabase}
+ */
+let employeeDb ;
+
 /**
  * Gets the employees for a given department, or all employees
  * if no department is given.
@@ -10,19 +17,20 @@
  * @param department The department to filter by
  * @param onSuccess A callback function that is executed when the employees are loaded
  */
-function getEmployees(department, onSuccess) {
-  const request = employeeDb
-    .transaction(['employees'], 'readonly')
-    .objectStore('employees')
-    .index('department')
-    .getAll(department);
+function getEmployees( department, onSuccess ) {
 
-  request.addEventListener('success', () => {
-    console.log('Got employees:', request.result);
-    onSuccess(request.result);
-  });
+    const request = employeeDb
+        .transaction( [ 'employees' ], 'readonly' )
+        .objectStore( 'employees' )
+        .index( 'department' )
+        .getAll( department );
 
-  request.addEventListener('error', () => {
-    console.log('Error loading employees:', request.error);
-  });
+    request.addEventListener( 'success', () => {
+        console.log( 'Got employees:', request.result );
+        onSuccess( request.result );
+    } );
+
+    request.addEventListener( 'error', () => {
+        console.log( 'Error loading employees:', request.error );
+    } );
 }

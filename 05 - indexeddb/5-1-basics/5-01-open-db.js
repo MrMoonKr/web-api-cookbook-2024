@@ -8,35 +8,48 @@
  * Because this is asynchronous, it takes a callback function `onSuccess`. Once the
  * database is ready, `onSuccess` will be called with the database object.
  * 
- * @param onSuccess A callback function that is executed when the database is ready
+ * @param {function(IDBDatabase)} onSuccess A callback function that is executed when the database is ready
  */
-function openDatabase(onSuccess) {
-  const request = indexedDB.open('contacts');
+function openDatabase( onSuccess ) {
 
-  // Create the object store if needed
-  request.addEventListener('upgradeneeded', () => {
-    const db = request.result;
+    // https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory
 
-    // The contact objects will have an `id` property which will
-    // be used as the key. When you add a new contact object, you don't need to
-    // set an `id` property; the `autoIncrement` flag means that the database will
-    // automatically set an `id` for you.
-    db.createObjectStore('contacts', {
-      keyPath: 'id',
-      autoIncrement: true
-    });
-  });
+    // Open the database with global window.indexedDB
+    const request = indexedDB.open( 'contacts' );
 
-  // When the database is ready for use, it triggers a `success` event.
-  request.addEventListener('success', () => {
-    const db = request.result;
+    // Create the object store if needed
+    request.addEventListener( 'upgradeneeded', ( evt ) => {
 
-    // Call the given callback with the database.
-    onSuccess(db);
-  });
+        console.log( "!!! upgradeneeded !!! ", evt.newVersion, evt.oldVersion );
+        
+        const db = request.result;
 
-  // Always handle errors!
-  request.addEventListener('error', () => {
-    console.error('Error opening database:', request.error);
-  });
+        // https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase
+
+        // The contact objects will have an `id` property which will
+        // be used as the key. When you add a new contact object, you don't need to
+        // set an `id` property; the `autoIncrement` flag means that the database will
+        // automatically set an `id` for you.
+        const objectStore = db.createObjectStore( 'contacts', {
+            keyPath: 'id',
+            autoIncrement: true
+        } );
+
+        //objectStore.createIndex( 'name', 'name', { unique: false } );
+    } );
+
+    // When the database is ready for use, it triggers a `success` event.
+    request.addEventListener( 'success', ( evt ) => {
+
+        const db = request.result;
+
+        // Call the given callback with the database.
+        onSuccess( db );
+    } );
+
+    // Always handle errors!
+    request.addEventListener( 'error', ( evt ) => {
+
+        console.error( 'Error opening database:', request.error );
+    } );
 }

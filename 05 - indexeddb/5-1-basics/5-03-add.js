@@ -5,22 +5,23 @@
 
 /**
  * Adds a new contact to the database, then re-renders the table.
- * @param contactsDb The IndexedDB database.
- * @param contact The new contact object to add
- * @param onSuccess A callback function that is executed when the contact is added
+ * @param {IDBDatabase} contactsDB The IndexedDB database.
+ * @param {Object}contact The new contact object to add
+ * @param {Function}onSuccess A callback function that is executed when the contact is added
  */
-function addContact(contactsDb, contact, onSuccess) {
-  const request = contactsDb
-    .transaction(['contacts'], 'readwrite')
-    .objectStore('contacts')
-    .add(contact);
+function addContact( contactsDB, contact, onSuccess ) {
 
-  request.addEventListener('success', () => {
-    console.log('Added new contact:', contact);
-    onSuccess();
-  });
+    const request = contactsDB
+        .transaction( [ 'contacts' ], 'readwrite' )
+        .objectStore( 'contacts' )
+        .add( contact );
 
-  request.addEventListener('error', () => {
-    console.error('Error adding contact:', request.error);
-  });
+    request.addEventListener( 'success', () => {
+        console.log( 'Added new contact:', contact );
+        onSuccess();
+    } );
+
+    request.addEventListener( 'error', () => {
+        console.error( 'Error adding contact:', request.error );
+    } );
 }

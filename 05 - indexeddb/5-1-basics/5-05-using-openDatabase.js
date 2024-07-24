@@ -8,7 +8,16 @@ let contactsDb;
 // Open the database and do the initial contact list render.
 // The success handler sets `contactsDb` to the new database object for later use,
 // then loads and renders the contacts.
-openDatabase(db => {
-  contactsDb = db;
-  renderContacts(contactsDb);
-});
+openDatabase( ( db ) => {
+    contactsDb = db;
+    renderContacts( contactsDb );
+} );
+
+/**
+ * 
+ * @param {IDBDatabase} contactsDb 
+ */
+function renderContacts( contactsDb ) {
+    
+    // Read the contacts from the database and Render them
+}

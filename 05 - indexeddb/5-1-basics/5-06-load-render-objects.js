@@ -3,7 +3,7 @@
  * From "Web Browser API Cookbook" by Joe Attardi
  */
 
-getContacts(contactsDb, contacts => {
-  // Contacts have been loaded, now render them
-  renderContacts(contacts);
-});
+getContacts( contactsDb, contacts => {
+    // Contacts have been loaded, now render them
+    renderContacts( contacts );
+} );

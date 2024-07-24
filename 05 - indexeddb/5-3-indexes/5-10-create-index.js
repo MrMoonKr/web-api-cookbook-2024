@@ -9,25 +9,29 @@
  * 
  * @param onSuccess A callback function that is executed when the database is ready
  */
-function openDatabase(onSuccess) {
-  const request = indexedDB.open('employees');
+function openDatabase( onSuccess ) {
 
-  request.addEventListener('upgradeneeded', () => {
-    const db = request.result;
+    const request = indexedDB.open( 'employees' );
 
-    // New employee objects will be given an auto-generated 
-    // `id` property which serves as its key.
-    const employeesStore = db.createObjectStore('employees', {
-      keyPath: 'id',
-      autoIncrement: true,
-    });
+    request.addEventListener( 'upgradeneeded', ( evt ) => {
 
-    // Create an index on the `department` property called `department`.
-    employeesStore.createIndex('department', 'department');
-  });
+        const oldVersion = evt.oldVersion ;
+        const newVersion = evt.newVersion ;
 
-  request.addEventListener('success', () => {
-    onSuccess(request.result);
-  });
+        const db = request.result;
+
+        // New employee objects will be given an auto-generated 
+        // `id` property which serves as its key.
+        const employeesStore = db.createObjectStore( 'employees', {
+            keyPath: 'id',
+            autoIncrement: true,
+        } );
+
+        // Create an index on the `department` property called `department`.
+        employeesStore.createIndex( 'department', 'department' );
+    } );
+
+    request.addEventListener( 'success', () => {
+        onSuccess( request.result );
+    } );
 }
-

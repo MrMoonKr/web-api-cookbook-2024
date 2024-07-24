@@ -5,23 +5,24 @@
 
 /**
  * Reads the contacts from the database.
+ * @param {IDBDatabase} contactsDb
  * @returns a Promise that is resolved with the contacts, or rejected with an error
  */
-function getContacts() {
-  return new Promise((resolve, reject) => {
-    const request = contactsDb
-      .transaction(['contacts'], 'readonly')
-      .objectStore('contacts')
-      .getAll();
+function getContacts( contactsDb) {
+    return new Promise( ( resolve, reject ) => {
+        const request = contactsDb
+            .transaction( [ 'contacts' ], 'readonly' )
+            .objectStore( 'contacts' )
+            .getAll();
 
-    request.addEventListener('success', () => {
-      console.log('Got contacts:', request.result);
-      resolve(request.result);
-    });
+        request.addEventListener( 'success', () => {
+            console.log( 'Got contacts:', request.result );
+            resolve( request.result );
+        } );
 
-    request.addEventListener('error', () => {
-      console.error('Error loading contacts:', request.error);
-      reject(request.error);
-    });
-  });
+        request.addEventListener( 'error', () => {
+            console.error( 'Error loading contacts:', request.error );
+            reject( request.error );
+        } );
+    } );
 }
