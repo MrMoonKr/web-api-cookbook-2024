@@ -5,6 +5,7 @@
 
 const contactsDb = {
     open( onSuccess ) {
+
         const request = indexedDB.open( 'contacts' );
 
         request.addEventListener( 'upgradeneeded', () => {
@@ -22,6 +23,7 @@ const contactsDb = {
     },
 
     getContacts( onSuccess ) {
+        
         const request = this.db
             .transaction( [ 'contacts' ], 'readonly' )
             .objectStore( 'contacts' )
